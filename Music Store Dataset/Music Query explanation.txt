@@ -1,0 +1,89 @@
+Q1: Who is the senior most employee based on job title? 
+
+Approch - As our question is related to employee , first I aprroch to the employee table then i find out level is one of the column which represent 
+          employees seniority thats why i put order by to level column so that i can get senior most employee. 
+       
+
+
+code - Select first_name from employee order by levels desc limit 1;
+
+
+Q2: What are top 3 values of total invoice?
+
+
+Approch - As our question is related to invoice first i go to the invoice table so that i can get detail information about the containt. Then i found onecolumn named as 
+          total which gives us total invoice of each city as we want top 3 total i put order by to total with limit 3 so that i can get only 3 outcomes. 
+
+        
+code - select total from invoice order by total desc limit 3;
+
+
+
+ Q3: Which countries have the most Invoices?
+
+Approch - As quetion is related to invoices first i approch invoice table then i put group by command to put every country in seperatly and then I put count command so 
+          that it can count no of invoices for each country. 
+
+
+code - Select count(*) as C , billing_country from invoice group by billing_country order by C desc limit 1; 
+
+
+
+#Q4: Which city has the best customers? We would like to throw a promotional Music Festival in the city we made the most money. 
+#Write a query that returns one city that 
+has the highest sum of invoice totals. 
+#Return both the city name & sum of all invoice totals. 
+
+
+
+
+Approch - As we have to find the city where our best customers lies that means we have to find the city where we done maximum invoices. So that I move to invoice table , 
+         then made group by on city so that we can seperate each city and caculate the sum of invoice 
+          done seperately . Finally we put order by command on that sum with limit 1 so that we can get city where we done maximum invoices. 
+
+
+Code - Select billing_city , Sum(total) as total_invoice from invoice group by billing_city order by total_invoice desc limit 1;
+
+
+
+Moderate Level - 
+
+#Q1: Write query to return the email, first name, last name, & Genre of all Rock Music listeners. 
+#Return your list ordered alphabetically by email starting with A. */
+
+Approch - As we notice the quetion first three containt that we require can retrive from customer table and the last containt can ritrive from Genre table . To do so we have to 
+          join these two table but as per observation there is no single common column between them so i found out the way to join both of them as per code shown in the below . As we need listenerrs 
+          those who are interested only in Rock sounds I prefered to put filter on Name column in Genre table. and put order by command on Email column. 
+
+Code - SELECT customer.email,customer.first_name,customer.last_name,genre.genre_id
+
+       FROM customer 
+
+       JOIN invoice ON customer.customer_id = invoice.invoice_id
+
+       JOIN invoice_line ON invoice.invoice_id = invoice_line.invoice_id 
+
+       JOIN track ON track.track_id = invoice.invoice_id
+       
+JOIN genre ON genre.genre_id = track.genre_id
+
+       where genre.name = 'Rock' 
+order by email ;
+
+
+#Q2: Return all the track names that have a song length longer than the average song length. 
+#Return the Name and Milliseconds for each track. Order by the song length with 
+     the longest songs listed first. */
+
+
+Approch - As we want track name i found that column into track table then there is one column named as Millisecoundwhich shows the lengh of the song , I prefer to filter that 
+          lenth so that i can get name of the track those lenth is greater than avg lenth of the track then i apply order by command to millisecound so that i can get the result in descending order.
+
+
+Code    -SELECT track.name , track.milliseconds 
+
+         from track 
+where milliseconds > ( SELECT avg(milliseconds) from track ) 
+         
+order by milliseconds desc;
+
